@@ -27,7 +27,7 @@ updating_system() {
 
 install_packages() {
   dots "Installing essential APT packages"
-  sudo apt-get install -y --no-install-recommends vim vlc git fastfetch openssh-client solaar curl wget
+  sudo apt-get install -y --no-install-recommends vim vlc git fastfetch openssh-client solaar curl wget libfuse2
   sudo apt-get clean
   print_success "Installed packages!"
   
