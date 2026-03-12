@@ -178,18 +178,18 @@ agents_support() {
 
 agents_setup() {
     printf '%s\n' "# AGENTS.md" >> AGENTS.md
+    mkdir -p .agents/{rules,skills,agents,commands,workflows,plugins,instructions,prompts}
     
     while :; do
         printf '%s\n' "What agent do you want to support? "
-        read -erp "Type 1 for Claude, 2 for GitHub Copilot, 3 for Antigravity, 4 for Cursor, 5 for OpenCode " ans
+        read -erp "Type 1 for Claude, 2 for GitHub Copilot, 3 for Antigravity, 4 for Cursor, 5 for OpenCode: " ans
 
         case "$ans" in
             1)
-                mkdir -p .claude/{agents,commands,skills/skill-example,rules}
-                touch -- CLAUDE.local.md .mcp.json
-                touch -- .claude/rules/coding-style.md
+                mkdir -p .claude
+                touch -- CLAUDE.local.md
                 ln -s AGENTS.md CLAUDE.md
-                printf '%s\n' "# CODING STYLE.md" >> .claude/rules/coding-style.md
+                ln -s ../.agents/skills .claude/skills
 
                 print_success "AGENTS.md created and linked to CLAUDE.md"
                 print_success ".claude directory created, including CLAUDE.local.md and agents, commands, skills and rules subdirectories"
