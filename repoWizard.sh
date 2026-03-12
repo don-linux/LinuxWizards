@@ -189,10 +189,14 @@ agents_setup() {
                 mkdir -p .claude
                 touch -- CLAUDE.local.md
                 ln -s AGENTS.md CLAUDE.md
+                ln -s ../.agents/rules .claude/rules
                 ln -s ../.agents/skills .claude/skills
-
+                ln -s ../.agents/agents .claude/agents
+                ln -s ../.agents/commands .claude/commands
+                ln -s ../.agents/workflows .claude/workflows
+                
                 print_success "AGENTS.md created and linked to CLAUDE.md"
-                print_success ".claude directory created, including CLAUDE.local.md and agents, commands, skills and rules subdirectories"
+                print_success ".claude directory created, including CLAUDE.local.md and agents, commands, skills and rules subdirectories symlinked from .agents"
                 print_success "Now this repository has Claude agent support"
 
                 finish_setup
@@ -200,12 +204,19 @@ agents_setup() {
                 return 0
                 ;;
             2)
-                mkdir -p .github/{agents,instructions,prompts,skills/SKILL-EXAMPLE}
-                touch -- .github/agents/agent-example.agent.md .github/instructions/instruction-example.instructions.md
-                touch -- .github/prompts/prompt-example.prompt.md .github/skills/SKILL-EXAMPLE/SKILL.md
+                mkdir -p .github
                 touch -- .github/copilot-instructions.md
+                ln -s ../.agents/rules .github/rules
+                ln -s ../.agents/skills .github/skills
+                ln -s ../.agents/agents .github/agents
+                ln -s ../.agents/commands .github/commands
+                ln -s ../.agents/workflows .github/workflows
+                ln -s ../.agents/plugins .github/plugins
+                ln -s ../.agents/instructions .github/instructions
+                ln -s ../.agents/prompts .github/prompts
+
                 print_success "AGENTS.md and copilot-instructions.md files created"
-                print_success ".github directory created, including agents, instructions, prompt and skills directories"
+                print_success ".github directory created, including rules, skills, agents, commands, workflows, plugins, instructions and prompts directories symlinked from .agents"
                 print_success "Now this repository has GitHub Copilot agent support"
                 
                 finish_setup
