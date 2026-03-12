@@ -85,8 +85,9 @@ alias grh='git reset --hard'
 alias gitundo='git reset --soft HEAD~1'
 alias gitunstage='git reset HEAD --'
 alias gitrepair='sudo chown -R "$(whoami)":"$(id -gn)" .git'
-alias gitclean='git fetch origin --prune'
 alias gitlocal='git config --local commit.gpgsign false'
+alias cleanremote='git fetch origin --prune'
+alias deleteremote ='git push origin --delete'
 
 # AI Agents
 alias cld='claude'
