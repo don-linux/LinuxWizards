@@ -196,7 +196,7 @@ agents_setup() {
                 ln -s ../.agents/workflows .claude/workflows
                 
                 print_success "AGENTS.md created and linked to CLAUDE.md"
-                print_success ".claude directory created, including CLAUDE.local.md and agents, commands, skills and rules subdirectories symlinked from .agents"
+                print_success ".claude directory created, including CLAUDE.local.md, rules, skills, agents, commands and workflows subdirectories symlinked from .agents"
                 print_success "Now this repository has Claude agent support"
 
                 finish_setup
@@ -224,22 +224,34 @@ agents_setup() {
                 return 0
                 ;;
             3)
-                mkdir -p .agent/rules .agent/workflows .agent/skills/skill-example 
-                touch -- .agent/rules/rules.md .agent/workflows/sample-workflow.md .agent/skills/skill-example/SKILL.md
+                mkdir -p .agent
+                ln -s ../.agents/rules .agent/rules
+                ln -s ../.agents/skills .agent/skills
+                ln -s ../.agents/agents .agent/agents
+                ln -s ../.agents/commands .agent/commands
+                ln -s ../.agents/workflows .agent/workflows
+
                 ln -s AGENTS.md GEMINI.md
 
                 print_success "AGENTS.md created and linked to GEMINI.md"
-                print_success ".agent directory created with rules, workflows and skills subdirectories"
+                print_success ".agent directory created with rules, skills, agents, commands and workflows subdirectories symlinked from .agents"
                 print_success "Now this repository has Google Antigravity agent support"
                 finish_setup
                 
                 return 0
                 ;;
             4)
-                mkdir -p .cursor/rules
-                touch -- .cursor/rules/coding-style.mdc .mcp.json .cursorindexingignore
+                mkdir -p .cursor
+                touch -- .cursor/.cursorindexingignore
+                ln -s ../.agents/rules .cursor/rules
+                ln -s ../.agents/skills .cursor/skills
+                ln -s ../.agents/agents .cursor/agents
+                ln -s ../.agents/commands .cursor/commands
+                ln -s ../.agents/workflows .cursor/workflows
+                
                 print_success "AGENTS.md created"
-                print_success ".cursor directory created, including rules subdirectory"
+                print_success ".cursorindexingignore file created in .cursor directory"
+                print_success ".cursor directory created, including rules, skills, agents, commands and workflows subdirectories symlinked from .agents"
                 print_success "Now this repository has Cursor agent support"
 
                 finish_setup
@@ -247,11 +259,16 @@ agents_setup() {
                 return 0
                 ;;
             5)
-                mkdir -p .opencode/{agents,skill/skill-example,commands,plugins}
-                touch -- .opencode/agents/agent-example.md .opencode/skills/skill-example/SKILL.md .opencode/commands/command-example.md opencode.json
+                mkdir -p .opencode
+                touch -- .opencode/opencode.json
+                ln -s ../.agents/rules .opencode/rules
+                ln -s ../.agents/skills .opencode/skills
+                ln -s ../.agents/agents .opencode/agents
+                ln -s ../.agents/commands .opencode/commands
+
                 print_success "AGENTS.md created"
-                printf '%s\n' "OpenCode recommends to add rules for the agent in the AGENTS.md file"
-                print_success ".opencode directory created, including agents, skills, commands and plugins directories"
+                print_success ".opencode.json file created in .opencode directory for MCP support"
+                print_success ".opencode directory created, including rules, skills, agents and commands subdirectories symlinked from .agents"
                 print_success "Now this repository has OpenCode agent support"
                 
                 finish_setup
