@@ -94,10 +94,10 @@ basic_setup() {
     printf '%s\n' '.env' '.venv/' 'node_modules/' '*.log' '*.tmp' '.DS_Store' 'CLAUDE.local.md' >> .gitignore
 
     # Create basic directories
-    mkdir -p .vscode .github .github/{workflows,ISSUE_TEMPLATE}
+    mkdir -p .vscode .github .github/ISSUE_TEMPLATE
 
     # Create basic project files
-    touch -- .env .env.example README.md CONTRIBUTING.md LICENSE .github/workflows/sample-workflow.yml .github/dependabot.yml .github/PULL_REQUEST_TEMPLATE.md
+    touch -- .env .env.example README.md CONTRIBUTING.md LICENSE .github/dependabot.yml .github/PULL_REQUEST_TEMPLATE.md
     printf '%s\n' "# New Project" >> README.md
     printf '%s\n' "# How to contribute?" >> CONTRIBUTING.md
     printf '%s\n' "No license defined for this project yet." >> LICENSE
@@ -109,7 +109,7 @@ basic_setup() {
     print_success ".env and .env.example files created"
     print_success "README.md, CONTRIBUTING.md and LICENSE files created"
     printf '%s\n' "Basic GitHub support added "
-    print_success ".github directory created with workflows and templates subdirectories, plus dependabot support"
+    print_success ".github directory created with pull request templates subdirectory and dependabot support"
 
     devcontainer_setup
     
@@ -178,21 +178,25 @@ agents_support() {
 
 agents_setup() {
     printf '%s\n' "# AGENTS.md" >> AGENTS.md
+    mkdir -p .agents/{rules,skills,agents,commands,workflows,plugins,instructions,prompts}
     
     while :; do
         printf '%s\n' "What agent do you want to support? "
-        read -erp "Type 1 for Claude, 2 for GitHub Copilot, 3 for Antigravity, 4 for Cursor, 5 for OpenCode " ans
+        read -erp "Type 1 for Claude Code, 2 for GitHub Copilot, 3 for Google Antigravity, 4 for Cursor, 5 for OpenCode: " ans
 
         case "$ans" in
             1)
-                mkdir -p .claude/{agents,commands,skills/skill-example,rules}
-                touch -- CLAUDE.local.md .mcp.json
-                touch -- .claude/rules/coding-style.md
+                mkdir -p .claude
+                touch -- CLAUDE.local.md
                 ln -s AGENTS.md CLAUDE.md
-                printf '%s\n' "# CODING STYLE.md" >> .claude/rules/coding-style.md
-
+                ln -s ../.agents/rules .claude/rules
+                ln -s ../.agents/skills .claude/skills
+                ln -s ../.agents/agents .claude/agents
+                ln -s ../.agents/commands .claude/commands
+                ln -s ../.agents/workflows .claude/workflows
+                
                 print_success "AGENTS.md created and linked to CLAUDE.md"
-                print_success ".claude directory created, including CLAUDE.local.md and agents, commands, skills and rules subdirectories"
+                print_success ".claude directory created, including CLAUDE.local.md, rules, skills, agents, commands and workflows subdirectories symlinked from .agents"
                 print_success "Now this repository has Claude agent support"
 
                 finish_setup
@@ -200,12 +204,18 @@ agents_setup() {
                 return 0
                 ;;
             2)
-                mkdir -p .github/{agents,instructions,prompts,skills/SKILL-EXAMPLE}
-                touch -- .github/agents/agent-example.agent.md .github/instructions/instruction-example.instructions.md
-                touch -- .github/prompts/prompt-example.prompt.md .github/skills/SKILL-EXAMPLE/SKILL.md
                 touch -- .github/copilot-instructions.md
+                ln -s ../.agents/rules .github/rules
+                ln -s ../.agents/skills .github/skills
+                ln -s ../.agents/agents .github/agents
+                ln -s ../.agents/commands .github/commands
+                ln -s ../.agents/workflows .github/workflows
+                ln -s ../.agents/plugins .github/plugins
+                ln -s ../.agents/instructions .github/instructions
+                ln -s ../.agents/prompts .github/prompts
+
                 print_success "AGENTS.md and copilot-instructions.md files created"
-                print_success ".github directory created, including agents, instructions, prompt and skills directories"
+                print_success ".github directory created, including rules, skills, agents, commands, workflows, plugins, instructions and prompts directories symlinked from .agents"
                 print_success "Now this repository has GitHub Copilot agent support"
                 
                 finish_setup
@@ -213,22 +223,34 @@ agents_setup() {
                 return 0
                 ;;
             3)
-                mkdir -p .agent/rules .agent/workflows .agent/skills/skill-example 
-                touch -- .agent/rules/rules.md .agent/workflows/sample-workflow.md .agent/skills/skill-example/SKILL.md
+                mkdir -p .agent
+                ln -s ../.agents/rules .agent/rules
+                ln -s ../.agents/skills .agent/skills
+                ln -s ../.agents/agents .agent/agents
+                ln -s ../.agents/commands .agent/commands
+                ln -s ../.agents/workflows .agent/workflows
+
                 ln -s AGENTS.md GEMINI.md
 
                 print_success "AGENTS.md created and linked to GEMINI.md"
-                print_success ".agent directory created with rules, workflows and skills subdirectories"
+                print_success ".agent directory created with rules, skills, agents, commands and workflows subdirectories symlinked from .agents"
                 print_success "Now this repository has Google Antigravity agent support"
                 finish_setup
                 
                 return 0
                 ;;
             4)
-                mkdir -p .cursor/rules
-                touch -- .cursor/rules/coding-style.mdc .mcp.json .cursorindexingignore
+                mkdir -p .cursor
+                touch -- .cursor/.cursorindexingignore
+                ln -s ../.agents/rules .cursor/rules
+                ln -s ../.agents/skills .cursor/skills
+                ln -s ../.agents/agents .cursor/agents
+                ln -s ../.agents/commands .cursor/commands
+                ln -s ../.agents/workflows .cursor/workflows
+                
                 print_success "AGENTS.md created"
-                print_success ".cursor directory created, including rules subdirectory"
+                print_success ".cursorindexingignore file created in .cursor directory"
+                print_success ".cursor directory created, including rules, skills, agents, commands and workflows subdirectories symlinked from .agents"
                 print_success "Now this repository has Cursor agent support"
 
                 finish_setup
@@ -236,11 +258,16 @@ agents_setup() {
                 return 0
                 ;;
             5)
-                mkdir -p .opencode/{agents,skill/skill-example,commands,plugins}
-                touch -- .opencode/agents/agent-example.md .opencode/skills/skill-example/SKILL.md .opencode/commands/command-example.md opencode.json
+                mkdir -p .opencode
+                touch -- .opencode/opencode.json
+                ln -s ../.agents/rules .opencode/rules
+                ln -s ../.agents/skills .opencode/skills
+                ln -s ../.agents/agents .opencode/agents
+                ln -s ../.agents/commands .opencode/commands
+
                 print_success "AGENTS.md created"
-                printf '%s\n' "OpenCode recommends to add rules for the agent in the AGENTS.md file"
-                print_success ".opencode directory created, including agents, skills, commands and plugins directories"
+                print_success ".opencode.json file created in .opencode directory for MCP support"
+                print_success ".opencode directory created, including rules, skills, agents and commands subdirectories symlinked from .agents"
                 print_success "Now this repository has OpenCode agent support"
                 
                 finish_setup
