@@ -94,7 +94,7 @@ basic_setup() {
     printf '%s\n' '.env' '.venv/' 'node_modules/' '*.log' '*.tmp' '.DS_Store' 'CLAUDE.local.md' >> .gitignore
 
     # Create basic directories
-    mkdir -p .vscode .github .github/{workflows,ISSUE_TEMPLATE}
+    mkdir -p .vscode .github .github/ISSUE_TEMPLATE
 
     # Create basic project files
     touch -- .env .env.example README.md CONTRIBUTING.md LICENSE .github/workflows/sample-workflow.yml .github/dependabot.yml .github/PULL_REQUEST_TEMPLATE.md
@@ -109,7 +109,7 @@ basic_setup() {
     print_success ".env and .env.example files created"
     print_success "README.md, CONTRIBUTING.md and LICENSE files created"
     printf '%s\n' "Basic GitHub support added "
-    print_success ".github directory created with workflows and templates subdirectories, plus dependabot support"
+    print_success ".github directory created with pull request templates subdirectory and dependabot support"
 
     devcontainer_setup
     
@@ -182,7 +182,7 @@ agents_setup() {
     
     while :; do
         printf '%s\n' "What agent do you want to support? "
-        read -erp "Type 1 for Claude, 2 for GitHub Copilot, 3 for Antigravity, 4 for Cursor, 5 for OpenCode: " ans
+        read -erp "Type 1 for Claude Code, 2 for GitHub Copilot, 3 for Google Antigravity, 4 for Cursor, 5 for OpenCode: " ans
 
         case "$ans" in
             1)
@@ -204,7 +204,6 @@ agents_setup() {
                 return 0
                 ;;
             2)
-                mkdir -p .github
                 touch -- .github/copilot-instructions.md
                 ln -s ../.agents/rules .github/rules
                 ln -s ../.agents/skills .github/skills
