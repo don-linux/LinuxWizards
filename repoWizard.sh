@@ -97,7 +97,7 @@ basic_setup() {
     mkdir -p .vscode .github .github/ISSUE_TEMPLATE
 
     # Create basic project files
-    touch -- .env .env.example README.md CONTRIBUTING.md LICENSE .github/workflows/sample-workflow.yml .github/dependabot.yml .github/PULL_REQUEST_TEMPLATE.md
+    touch -- .env .env.example README.md CONTRIBUTING.md LICENSE .github/dependabot.yml .github/PULL_REQUEST_TEMPLATE.md
     printf '%s\n' "# New Project" >> README.md
     printf '%s\n' "# How to contribute?" >> CONTRIBUTING.md
     printf '%s\n' "No license defined for this project yet." >> LICENSE
