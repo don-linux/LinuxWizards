@@ -241,16 +241,31 @@ agents_setup() {
                 ;;
             4)
                 mkdir -p .cursor
-                touch -- .cursor/.cursorindexingignore
-                ln -s ../.agents/rules .cursor/rules
+                mkdir -p .cursor/rules
+                touch -- .cursorignore
+                touch -- .cursorindexingignore
+                
+                cat > .cursor/rules/mdtomdc.sh << 'SCRIPT'
+#!/bin/bash
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+
+for f in "$REPO_ROOT"/.agents/rules/*.md; do
+    [ -e "$f" ] || continue
+    base=$(basename "$f" .md)
+    ln -sfn "../../.agents/rules/${base}.md" "$REPO_ROOT/.cursor/rules/${base}.mdc"
+done
+SCRIPT
+                chmod +x .cursor/rules/mdtomdc.sh
+                
                 ln -s ../.agents/skills .cursor/skills
                 ln -s ../.agents/agents .cursor/agents
                 ln -s ../.agents/commands .cursor/commands
                 ln -s ../.agents/workflows .cursor/workflows
                 
                 print_success "AGENTS.md created"
-                print_success ".cursorindexingignore file created in .cursor directory"
-                print_success ".cursor directory created, including rules, skills, agents, commands and workflows subdirectories symlinked from .agents"
+                print_success ".cursorignore and .cursorindexingignore files created"
+                print_warning "You need to run the mdtomdc.sh script to create the symlinks for the rules from .agents/rules directory to .cursor/rules directory with .mdc extension"
+                print_success ".cursor directory created, including skills, agents, commands and workflows subdirectories symlinked from .agents"
                 print_success "Now this repository has Cursor agent support"
 
                 finish_setup
