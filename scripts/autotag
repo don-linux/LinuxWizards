@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+read -erp "Tag version: " tg
+read -erp "Tag message: " msg
+
+
+if [[ -z "$msg" || -z "$tg" ]]; then
+  printf '%s\n' "Tag cancelled, empty version or message"
+  exit 1
+fi
+
+git tag -a "$tg" -m "$msg"
